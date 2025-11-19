@@ -7,8 +7,9 @@
   },
   "ExpandedNodes": [
     "",
-    "\\include"
+    "\\include",
+    "\\src"
   ],
-  "SelectedNode": "\\include\\stack.h",
+  "SelectedNode": "\\README.md",
   "PreviewInSolutionExplorer": false
 }

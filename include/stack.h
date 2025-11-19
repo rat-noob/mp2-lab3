@@ -69,4 +69,7 @@ public:
 
 		return mem[curr];
 	}
+	bool IsEmpty() {
+		return curr == 0;
+	}
 };
