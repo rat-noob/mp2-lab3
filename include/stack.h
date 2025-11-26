@@ -11,7 +11,7 @@ class TStack {
 	T* mem;
 
 public:
-	TStack(int sz = 1) {
+	TStack(int sz = 20) {
 		curr = -1;
 		n = sz;
 		

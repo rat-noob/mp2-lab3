@@ -1,0 +1,10 @@
+^D:\UNN\C++\LAB3\MP2-LAB3\BUILD\CMAKEFILES\308006547CF08F8342D9A1AE8145F093\GENERATE.STAMP.RULE
+setlocal
+D:\CMake\bin\cmake.exe -SD:/UNN/c++/lab3/mp2-lab3 -BD:/UNN/c++/lab3/mp2-lab3/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/UNN/c++/lab3/mp2-lab3/build/Arth.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

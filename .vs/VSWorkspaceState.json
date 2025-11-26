@@ -7,9 +7,10 @@
   },
   "ExpandedNodes": [
     "",
+    "\\build",
     "\\include",
+    "\\samples",
     "\\src"
   ],
-  "SelectedNode": "\\README.md",
   "PreviewInSolutionExplorer": false
 }
