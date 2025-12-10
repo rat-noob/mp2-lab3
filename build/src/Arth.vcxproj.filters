@@ -4,12 +4,18 @@
     <ClCompile Include="D:\UNN\c++\lab3\mp2-lab3\src\ArithmeticExpressoin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="D:\UNN\c++\lab3\mp2-lab3\src\Calc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="D:\UNN\c++\lab3\mp2-lab3\src\MyParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="D:\UNN\c++\lab3\mp2-lab3\include\ArithmeticExpression.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\UNN\c++\lab3\mp2-lab3\include\Calc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="D:\UNN\c++\lab3\mp2-lab3\include\MyParser.h">

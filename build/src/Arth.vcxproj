@@ -293,8 +293,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="D:\UNN\c++\lab3\mp2-lab3\src\ArithmeticExpressoin.cpp" />
+    <ClCompile Include="D:\UNN\c++\lab3\mp2-lab3\src\Calc.cpp" />
     <ClCompile Include="D:\UNN\c++\lab3\mp2-lab3\src\MyParser.cpp" />
     <ClInclude Include="D:\UNN\c++\lab3\mp2-lab3\include\ArithmeticExpression.h" />
+    <ClInclude Include="D:\UNN\c++\lab3\mp2-lab3\include\Calc.h" />
     <ClInclude Include="D:\UNN\c++\lab3\mp2-lab3\include\MyParser.h" />
     <ClInclude Include="D:\UNN\c++\lab3\mp2-lab3\include\queue.h" />
     <ClInclude Include="D:\UNN\c++\lab3\mp2-lab3\include\stack.h" />
