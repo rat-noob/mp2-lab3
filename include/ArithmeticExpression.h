@@ -4,6 +4,7 @@
 #include "MyParser.h"
 #include "queue.h"
 #include "stack.h"
+#include "Calc.h"
 using namespace std;
 
 class ArithmeticExpression {
@@ -18,6 +19,7 @@ class ArithmeticExpression {
 	map<char, double> operands;
 
 	MyParser pars;
+	Calc calc;
 
 	double result;
 
@@ -28,7 +30,7 @@ public:
 	void PrintPostfix();
 
 	TQueue<char> GetOperands();
-	double GetResult();
+	double GetResult(map<char, double> val);
 
 
 	/*void Parse();

@@ -4,8 +4,12 @@ ArithmeticExpression::ArithmeticExpression(string inf):Sinfix(inf) {
 	
 	
 	priority = { {'+',1},{'-',1},{'*',2},{'/',2},{'(',0} };
-	Qinfix  = pars.Parse(Sinfix);
-	postfix = pars.ToPostfix(Qinfix,priority,operands);
+	Qinfix = pars.Parse(Sinfix);
+	if (pars.IsCorrect(Qinfix)) {
+		postfix = pars.ToPostfix(Qinfix, priority, operands);
+	}
+	else exit(-1);
+	
 	
 }
 
@@ -40,7 +44,22 @@ TQueue<char> ArithmeticExpression::GetOperands() {
 	return op;
 }
 
-double ArithmeticExpression::GetResult() {
+double ArithmeticExpression::GetResult(map<char, double> val) {
+	map<char, double> newop;
+	for (const auto& item : operands) {
+		char it = item.first;
+		double v = item.second;
+		newop[it] = v;
+	}
+	for (const auto& item : val) {
+		char it = item.first;
+		double v = item.second;
+		newop[it] = v;
+	}
+	
+	
+	
+	result= calc.Calculate(postfix, newop);
 	return result;
 }
 

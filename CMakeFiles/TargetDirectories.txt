@@ -1,0 +1,4 @@
+D:/UNN/c++/lab3/mp2-lab3/CMakeFiles/ALL_BUILD.dir
+D:/UNN/c++/lab3/mp2-lab3/CMakeFiles/ZERO_CHECK.dir
+D:/UNN/c++/lab3/mp2-lab3/src/CMakeFiles/Arth.dir
+D:/UNN/c++/lab3/mp2-lab3/samples/CMakeFiles/sample.dir

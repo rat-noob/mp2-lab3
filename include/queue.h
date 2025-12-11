@@ -13,7 +13,7 @@ class TQueue {
 	T* mem;
 
 public:
-	TQueue(int sz = 20) {
+	TQueue(int sz = 100) {
 		n = sz;
 		mem = new T[n];
 		s = 0; f = n - 1;

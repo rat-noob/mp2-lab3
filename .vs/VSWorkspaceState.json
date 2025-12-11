@@ -7,10 +7,10 @@
   },
   "ExpandedNodes": [
     "",
-    "\\build",
     "\\include",
     "\\samples",
     "\\src"
   ],
+  "SelectedNode": "\\gtest",
   "PreviewInSolutionExplorer": false
 }

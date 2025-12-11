@@ -1,0 +1,9 @@
+{
+	"InstallScripts" : 
+	[
+		"D:/UNN/c++/lab3/mp2-lab3/cmake_install.cmake",
+		"D:/UNN/c++/lab3/mp2-lab3/src/cmake_install.cmake",
+		"D:/UNN/c++/lab3/mp2-lab3/samples/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

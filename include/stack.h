@@ -59,7 +59,7 @@ public:
 		mem[curr] = v;
 	}
 
-	T& pop() {
+	T pop() {
 		if (curr == -1) throw out_of_range("stack is empty");
 
 		return mem[curr--];
@@ -70,6 +70,6 @@ public:
 		return mem[curr];
 	}
 	bool IsEmpty() {
-		return curr == 0;
+		return curr == -1;
 	}
 };
