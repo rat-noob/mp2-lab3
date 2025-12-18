@@ -2,11 +2,13 @@
 
 ArithmeticExpression::ArithmeticExpression(string inf):Sinfix(inf) {
 	
-	
-	priority = { {'+',1},{'-',1},{'*',2},{'/',2},{'(',0} };
+	Tokenizer tokenizer(inf);
+	priority = { {"+",1},{"-",1},{"*",2},{"/",2},{"(",0}};
 	Qinfix = pars.Parse(Sinfix);
+	TokQinfix = tokenizer.getAllTokens();
 	if (pars.IsCorrect(Qinfix)) {
 		postfix = pars.ToPostfix(Qinfix, priority, operands);
+		TokPostfix = pars.ToPostfix(TokQinfix, priority, operands);
 	}
 	else exit(-1);
 	

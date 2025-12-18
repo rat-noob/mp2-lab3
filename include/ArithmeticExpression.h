@@ -5,6 +5,8 @@
 #include "queue.h"
 #include "stack.h"
 #include "Calc.h"
+#include "Token.h"
+#include "Tokenizer.h"
 using namespace std;
 
 class ArithmeticExpression {
@@ -12,14 +14,18 @@ class ArithmeticExpression {
 	string Sinfix;
 	TQueue<char> Qinfix;
 	TQueue<char> postfix;
+	TQueue<Token> TokQinfix;//для нового варианта
+	TQueue<Token> TokPostfix;//для нового варианта
 	/*TQueue<char> Qinfix(15);
 	TQueue<char> postfix(15);*/
 
-	map<char, int> priority;
+	/*map<char, int> priority;*/
+	map<string, int> priority;
 	map<char, double> operands;
 
 	MyParser pars;
 	Calc calc;
+	Tokenizer tok;
 
 	double result;
 

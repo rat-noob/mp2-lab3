@@ -37,7 +37,7 @@ bool MyParser::IsCorrect(TQueue<char> Qinfix) {
 	return !Error;
 }
 
-TQueue<char> MyParser::ToPostfix(TQueue<char> Qinfix, map<char, int> priority, map<char,double>& operands) {
+TQueue<char> MyParser::ToPostfix(TQueue<char> Qinfix, map<string, int> priority, map<char,double>& operands) {
 	TStack<char> st(50);
 	TQueue<char> postfix(50);
 	char stackitem;
@@ -51,7 +51,7 @@ TQueue<char> MyParser::ToPostfix(TQueue<char> Qinfix, map<char, int> priority, m
 
 		case')':
 			stackitem = st.pop();
-			while (stackitem != '(') {
+			while (stackitem != '(' && !st.IsEmpty()) {//если что убрать условие после и
 				postfix.push(stackitem);
 				stackitem = st.pop();
 			}
@@ -80,6 +80,56 @@ TQueue<char> MyParser::ToPostfix(TQueue<char> Qinfix, map<char, int> priority, m
 	while (!st.IsEmpty()) {
 		stackitem = st.pop();
 		postfix.push(stackitem);
+	}
+	return postfix;
+}
+
+
+TQueue<Token> MyParser::ToPostfix(TQueue<Token> Qinfix, map<string, int> priority, map<char, double>& operands) {
+	TStack<Token> st(50);
+	TQueue<Token> postfix(50);
+	Token stackitem;
+	Token qitem;
+	while (!Qinfix.IsEmpty()) {
+		qitem = Qinfix.pop();
+		switch (qitem.type) {
+		case TokenType::Number:
+		case TokenType::Variable:
+			postfix.push(qitem);
+			break;
+		case TokenType::Unary_minus:
+			postfix.push(Token(TokenType::Number, "0"));
+			st.push(qitem);
+			break;
+		case TokenType::Unary_plus:
+			break;
+		case TokenType::Paren_open:
+			st.push(qitem);
+		case TokenType::Paren_close:
+			stackitem = st.pop();
+			while (!st.IsEmpty() && stackitem.type != Paren_open) {
+				postfix.push(stackitem);
+				stackitem = st.pop();
+			}
+			if (!st.IsEmpty()) st.pop();
+			break;
+		case TokenType::Binary_op://здесь может быть что-то не так
+			while (!st.IsEmpty()) {
+				stackitem = st.pop();
+				if (priority[qitem.value] <= priority[stackitem.value]) {
+					postfix.push(stackitem);
+				}
+				else {
+					st.push(qitem);
+					break;
+				}
+			}
+		default:
+			throw - 1;
+		}
+	}
+	while (!st.IsEmpty()) {
+		postfix.push(st.pop());
 	}
 	return postfix;
 }

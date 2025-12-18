@@ -7,8 +7,8 @@ void main() {
 	setlocale(LC_ALL, "Russian");
 	string Expr= "(a+b*c)*(c/d-e)";
 	string wrong1 = "a+b";
-	string wr = "a+b)";
-	ArithmeticExpression example(Expr);
+	string wr = "-(-1)";
+	ArithmeticExpression example(wr);
 	example.PrintInfix();
 	example.PrintPostfix();
 	
