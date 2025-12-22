@@ -34,9 +34,11 @@ double Calc::Calculate(TQueue<char> postfix, map<char, double> operands) {
 	return st.pop();
 }
 
-double Calc::Calculate(TQueue<Token>postfix, map<string, double> operands) {//поменял с чар на стринг
+double Calc::Calculate(TQueue<Token>postfix, map<string, double>& operands) {//поменял с чар на стринг
 	TStack<double> st;
 	double lo, ro;
+	double val;
+	char op;
 	Token cur;
 
 
@@ -49,34 +51,37 @@ double Calc::Calculate(TQueue<Token>postfix, map<string, double> operands) {//по
 		case Binary_op:
 			ro = st.pop();
 			lo = st.pop();
-			switch (cur.value) {
-			case "+":
+			op = cur.value[0];
+			switch (op) {
+			case '+':
 				st.push(lo + ro);
 				break;
-			case"-":
+			case '-':
 				st.push(lo - ro);
 				break;
-			case "*":
+			case '*':
 				st.push(lo * ro);
 				break;
-			case "/":
-				if (ro == 0) throw - 1;
+			case '/':
+				if (ro == 0) /*throw - 1;*/
 				st.push(lo / ro);
 				break;
 			}
 			break;
 		case Unary_minus:
-			double val = st.pop();
+			val = st.pop();
 			st.push(-val);
 			break;
 		case Variable:
-			double val = operands.find(cur.value);
-			st.push(val->second);
+			/*double val = operands.find(cur.value);*/
+			val = operands[cur.value];
+			st.push(val);
 			break;
 		default:
-			throw-1
+			throw -1;
 
 		}
 	}
+	return st.pop();
 
 }

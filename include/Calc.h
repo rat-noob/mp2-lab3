@@ -10,5 +10,5 @@ using namespace std;
 class Calc {
 public:
 	double Calculate(TQueue<char> postfix, map<char, double> operands);
-	double Calculate(TQueue<Token>postfix, map<char, double> operands);
+	double Calculate(TQueue<Token>postfix, map<string, double>& operands);
 };

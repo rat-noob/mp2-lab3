@@ -13,7 +13,7 @@ class TQueue {
 	T* mem;
 
 public:
-	TQueue(int sz = 100) {
+	TQueue(int sz = 200) {
 		n = sz;
 		mem = new T[n];
 		s = 0; f = n - 1;
@@ -48,7 +48,8 @@ public:
 		return *this;
 	}
 
-	bool IsFull() { return s == next(next(f)); }//возможно что=то не так с этими двумя методами
+	bool IsFull() { /*return s == next(next(f));*/return next(next(f)) == s;
+	}//возможно что=то не так с этими двумя методами
 	bool IsEmpty() { return s == next(f); }
 
 	void push(const T& el) {

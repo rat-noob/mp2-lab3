@@ -3,8 +3,8 @@
 #include <iostream>
 #include <cctype>
 #include <map>
-#include <stack>
-#include <queue>
+#include "stack.h"
+#include "queue.h"
 #include "Token.h"
 using namespace std;
 class Tokenizer {
@@ -12,10 +12,8 @@ class Tokenizer {
 	int pos;
 	char currentChar;
 
-	void next() {
-	}
-	string readNumber() {
-	}
+	void next();
+	string readNumber();
 	string readIdentifier();
 public:
 	Tokenizer(const string& expr);

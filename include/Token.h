@@ -23,6 +23,7 @@ struct Token {
 	TokenType type;
 	string value;
 
-	Token(TokenType t = TokenType::End, string val):type(t),value(val){}
+	Token(TokenType t = TokenType::End, string val="") :type(t), value(val) {}
+	string getvalue() { return value; }
 
 };

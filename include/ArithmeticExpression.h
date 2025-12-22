@@ -21,11 +21,12 @@ class ArithmeticExpression {
 
 	/*map<char, int> priority;*/
 	map<string, int> priority;
-	map<char, double> operands;
+	/*map<char, double> operands;*/
+	map<string, double> operands;
 
 	MyParser pars;
 	Calc calc;
-	Tokenizer tok;
+	Tokenizer* tok;
 
 	double result;
 
@@ -35,8 +36,8 @@ public:
 	void PrintInfix();
 	void PrintPostfix();
 
-	TQueue<char> GetOperands();
-	double GetResult(map<char, double> val);
+	TQueue<string> GetOperands();
+	double GetResult(map<string, double> val);
 
 
 	/*void Parse();

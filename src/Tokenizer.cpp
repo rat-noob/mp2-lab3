@@ -8,9 +8,9 @@ void Tokenizer::next() {
 string Tokenizer::readNumber(){
 	string result;
 	bool hasDecimal = false;
-	while (currentChar != '\0' && (isdigit(currentChar) || currentChar=='.') {
+	while (currentChar != '\0' && (isdigit(currentChar) || currentChar=='.')) {
 		if (currentChar == '.') {
-			if (hasDecimal) return -1;
+			if (hasDecimal) break;
 			hasDecimal = true;
 		}
 		result += currentChar;
@@ -29,7 +29,7 @@ string Tokenizer::readIdentifier() {
 Tokenizer::Tokenizer(const string& expr) :expression(expr), pos(0) {
 	next();
 }
-Token Tokenizer::getNewToken(bool expectOperand  = true) {
+Token Tokenizer::getNewToken(bool expectOperand) {
 	int cur = pos - 1;
 	
 	if(currentChar=='\0') return Token(TokenType::End, "");
@@ -42,33 +42,33 @@ Token Tokenizer::getNewToken(bool expectOperand  = true) {
 		return Token(TokenType::Variable, id);
 	}
 	if (currentChar == '(') {
-		string c = currentChar;
+		char c = currentChar;
 		next();
-		return Token(TokenType::Paren_open, c);
+		return Token(TokenType::Paren_open, string(1,c));
 	}
 	if (currentChar == ')') {
-		string c = currentChar;
+		char c = currentChar;
 		next();
-		return Token(TokenType::Paren_close, c);
+		return Token(TokenType::Paren_close, string(1, c));
 	}
 	if (currentChar == '+' || currentChar == '-') {
-		string op = currentChar;
+		char op = currentChar;
 
 		if (expectOperand) {
 			next();
-			if (op == '+') return Token(TokenType::Unary_plus, op);
-			else return Token(TokenType::Unary_minus, op);
+			if (op == '+') return Token(TokenType::Unary_plus, string(1, op));
+			else return Token(TokenType::Unary_minus, string(1, op));
 		}
 		else {
 			next();
-			return Token(TokenType::Binary_op, op);
+			return Token(TokenType::Binary_op, string(1, op));
 		}
 	}
 
 	if (currentChar == '*' || currentChar == '/') {
-		string op = currentChar;
+		char op = currentChar;
 		next();
-		return Token(TokenType::Binary_op, op);
+		return Token(TokenType::Binary_op, string(1, op));
 	}
 	throw - 1;
 }
@@ -89,7 +89,7 @@ TQueue<Token> Tokenizer::getAllTokens() {
 
 			tokens.push(token);
 
-			switch (token) {
+			switch (token.type) {
 			case TokenType::Variable:
 			case TokenType::Number:
 			case TokenType::Paren_close:

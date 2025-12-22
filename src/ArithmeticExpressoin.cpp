@@ -7,7 +7,7 @@ ArithmeticExpression::ArithmeticExpression(string inf):Sinfix(inf) {
 	Qinfix = pars.Parse(Sinfix);
 	TokQinfix = tokenizer.getAllTokens();
 	if (pars.IsCorrect(Qinfix)) {
-		postfix = pars.ToPostfix(Qinfix, priority, operands);
+		/*postfix = pars.ToPostfix(Qinfix, priority, operands);*/
 		TokPostfix = pars.ToPostfix(TokQinfix, priority, operands);
 	}
 	else exit(-1);
@@ -36,32 +36,36 @@ void ArithmeticExpression::PrintPostfix(void) {
 	cout << "\n";
 }
 
-TQueue<char> ArithmeticExpression::GetOperands() {
-	TQueue<char> op(15);
+TQueue<string> ArithmeticExpression::GetOperands() {
+	/*TQueue<char> op(15);*/
+	TQueue<string> op(15);
 	for (const auto& item : operands) {
-		char it = item.first;
+		/*char it = item.first;*/
+		string it = item.first;
 		op.push(it);
 	}
 	
 	return op;
 }
 
-double ArithmeticExpression::GetResult(map<char, double> val) {
-	map<char, double> newop;
+double ArithmeticExpression::GetResult(map<string, double> val) {
+	/*map<char, double> newop;*/
+	map<string, double> newop;
 	for (const auto& item : operands) {
-		char it = item.first;
+		/*char it = item.first;*/
+		string it = item.first;
 		double v = item.second;
 		newop[it] = v;
 	}
 	for (const auto& item : val) {
-		char it = item.first;
+		string it = item.first;
 		double v = item.second;
 		newop[it] = v;
 	}
 	
 	
 	
-	result= calc.Calculate(postfix, newop);
+	result= calc.Calculate(TokPostfix, newop);
 	return result;
 }
 

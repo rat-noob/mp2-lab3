@@ -6,19 +6,19 @@ using namespace std;
 void main() {
 	setlocale(LC_ALL, "Russian");
 	string Expr= "(a+b*c)*(c/d-e)";
-	string wrong1 = "a+b";
+	string wrong1 = "a1+b2";
 	string wr = "-(-1)";
-	ArithmeticExpression example(wr);
+	ArithmeticExpression example(wrong1);
 	example.PrintInfix();
 	example.PrintPostfix();
 	
 	
-	map<char, double> values;
+	map<string, double> values;
 	double val;
-	TQueue<char> op = example.GetOperands();
+	TQueue<string> op = example.GetOperands();
 
 	while (!op.IsEmpty()) {
-		char elem = op.pop();
+		string elem = op.pop();
 		cout << "¬ведите значение " << elem<<": ";
 		cin >> val;
 		values[elem] = val;

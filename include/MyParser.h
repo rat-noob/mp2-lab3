@@ -9,5 +9,5 @@ public:
 	bool IsCorrect(TQueue<char> Qinfix);
 	TQueue<char> Parse(string Sinfix);
 	TQueue<char> ToPostfix(TQueue<char> Qinfix, map<string, int> priority, map<char, double> &operands);
-	TQueue<Token> ToPostfix(TQueue<Token> Qinfix, map<string, int> priority, map<char, double>& operands);
+	TQueue<Token> ToPostfix(TQueue<Token> Qinfix, map<string, int> priority, map<string, double>& operands);
 };
