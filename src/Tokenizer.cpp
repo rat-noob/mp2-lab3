@@ -8,7 +8,7 @@ void Tokenizer::next() {
 string Tokenizer::readNumber(){
 	string result;
 	bool hasDecimal = false;
-	while (currentChar != '\0' && (isdigit(currentChar) || currentChar=='.')) {
+	while (currentChar != '\0' && (isdigit(currentChar) || currentChar==',')) {
 		if (currentChar == '.') {
 			if (hasDecimal) break;
 			hasDecimal = true;
@@ -17,6 +17,37 @@ string Tokenizer::readNumber(){
 		next();
 	}
 	return result;
+
+
+	//string result;
+	//bool hasDecimal = false;
+
+	//cout << "Начало readNumber, currentChar='" << currentChar << "'" << endl;
+
+	//while (currentChar != '\0') {
+	//	if (currentChar == '.') {
+	//		if (hasDecimal) {
+	//			cout << "Вторая точка, выхожу" << endl;
+	//			break;
+	//		}
+	//		hasDecimal = true;
+	//		cout << "Первая точка, добавляю" << endl;
+	//		result += currentChar;
+	//		next();
+	//	}
+	//	else if (isdigit(currentChar)) {
+	//		result += currentChar;
+	//		next();
+	//	}
+	//	else {
+	//		// Не цифра и не точка - выходим
+	//		cout << "Не цифра и не точка ('" << currentChar << "'), выхожу" << endl;
+	//		break;
+	//	}
+	//}
+
+	//cout << "readNumber вернула: \"" << result << "\"" << endl;
+	//return result;
 }
 string Tokenizer::readIdentifier() {
 	string result;
@@ -30,7 +61,6 @@ Tokenizer::Tokenizer(const string& expr) :expression(expr), pos(0) {
 	next();
 }
 Token Tokenizer::getNewToken(bool expectOperand) {
-	int cur = pos - 1;
 	
 	if(currentChar=='\0') return Token(TokenType::End, "");
 	if (isdigit(currentChar)) {
@@ -57,7 +87,8 @@ Token Tokenizer::getNewToken(bool expectOperand) {
 		if (expectOperand) {
 			next();
 			if (op == '+') return Token(TokenType::Unary_plus, string(1, op));
-			else return Token(TokenType::Unary_minus, string(1, op));
+			/*else return Token(TokenType::Unary_minus, string(1, op));*/
+			else return Token(TokenType::Unary_minus, "~");
 		}
 		else {
 			next();
@@ -102,7 +133,7 @@ TQueue<Token> Tokenizer::getAllTokens() {
 				expectOperand = true;
 				break;
 			default:
-				expectOperand = false;
+				expectOperand = true;
 			}
 		}
 		}

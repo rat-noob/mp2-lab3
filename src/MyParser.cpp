@@ -117,17 +117,28 @@ TQueue<Token> MyParser::ToPostfix(TQueue<Token> Qinfix, map<string, int> priorit
 				postfix.push(stackitem);
 				stackitem = st.pop();
 			}
-			if (!st.IsEmpty()) st.pop();
 			break;
+			//while (!st.IsEmpty()) {
+			//	stackitem = st.pop();
+			//	if (stackitem.type == TokenType::Paren_open) {
+			//		break;  // нашли открывающую скобку
+			//	}
+			//	else {
+			//		postfix.push(stackitem);  // выталкиваем операторы
+			//	}
+			//}
+			//break;
 		case TokenType::Binary_op://здесь может быть что-то не так
 			while (!st.IsEmpty()) {
-				stackitem = st.pop();
-				/*stackitem = st.top();*/
-				if ((priority[qitem.value] <= priority[stackitem.value])&&stackitem.type!=Paren_open) {
+				/*stackitem = st.pop();*/
+				stackitem = st.top();
+				if ((priority[qitem.value] <= priority[stackitem.value])/*&&stackitem.type!=Paren_open*/) {
 					postfix.push(stackitem);
+					st.pop();
+					
 				}
 				else {
-					st.push(qitem);
+					/*st.push(qitem);*/
 					break;
 				}
 			}

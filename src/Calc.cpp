@@ -46,7 +46,8 @@ double Calc::Calculate(TQueue<Token>postfix, map<string, double>& operands) {//ï
 		cur = postfix.pop();
 		switch (cur.type) {
 		case Number:
-			st.push(stod(cur.value));
+			val = stod(cur.value);
+			st.push(val);
 			break;
 		case Binary_op:
 			ro = st.pop();
@@ -63,7 +64,7 @@ double Calc::Calculate(TQueue<Token>postfix, map<string, double>& operands) {//ï
 				st.push(lo * ro);
 				break;
 			case '/':
-				if (ro == 0) /*throw - 1;*/
+				if (ro == 0) throw - 1;
 				st.push(lo / ro);
 				break;
 			}

@@ -1,9 +1,9 @@
 #include "ArithmeticExpression.h"
 
-ArithmeticExpression::ArithmeticExpression(string inf):Sinfix(inf) {
-	
+ArithmeticExpression::ArithmeticExpression(string inf) :Sinfix(inf) {
+
 	Tokenizer tokenizer(inf);
-	priority = { {"+",1},{"-",1},{"*",2},{"/",2},{"(",0}};
+	priority = { {"+",1},{"-",1},{"*",2},{"/",2},{"(",0},{"~",3} };
 	Qinfix = pars.Parse(Sinfix);
 	TokQinfix = tokenizer.getAllTokens();
 	if (pars.IsCorrect(Qinfix)) {
@@ -11,13 +11,13 @@ ArithmeticExpression::ArithmeticExpression(string inf):Sinfix(inf) {
 		TokPostfix = pars.ToPostfix(TokQinfix, priority, operands);
 	}
 	else exit(-1);
-	
-	
+
+
 }
 
 void ArithmeticExpression::PrintInfix(void) {
 	TQueue<char> temp = this->Qinfix;
-	
+
 	while (!temp.IsEmpty()) {
 		cout << temp.pop();
 	}
@@ -29,11 +29,19 @@ void ArithmeticExpression::PrintInfix(void) {
 	}*/
 }
 void ArithmeticExpression::PrintPostfix(void) {
-	TQueue<char> temp = this->postfix;
+	/*TQueue<char> temp = this->postfix;
 	while (!temp.IsEmpty()) {
 		cout << temp.pop();
+	}для старого варианта с чарами
+	cout << "\n";*/
+
+	TQueue<Token> temp = this->TokPostfix;
+	while (!temp.IsEmpty()) {
+		Token t = temp.pop();
+		cout << t.value;
 	}
 	cout << "\n";
+
 }
 
 TQueue<string> ArithmeticExpression::GetOperands() {
@@ -44,7 +52,7 @@ TQueue<string> ArithmeticExpression::GetOperands() {
 		string it = item.first;
 		op.push(it);
 	}
-	
+
 	return op;
 }
 
@@ -62,11 +70,11 @@ double ArithmeticExpression::GetResult(map<string, double> val) {
 		double v = item.second;
 		newop[it] = v;
 	}
-	
-	
-	
-	result= calc.Calculate(TokPostfix, newop);
-	return result;
+
+
+
+	double res = calc.Calculate(TokPostfix, newop);
+	return res;
 }
 
 

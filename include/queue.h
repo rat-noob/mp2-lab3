@@ -9,6 +9,7 @@ class TQueue {
 	int n;
 
 	int s, f;//индексы первого и последнего элементов очереди
+	int count;
 
 	T* mem;
 
@@ -16,7 +17,9 @@ public:
 	TQueue(int sz = 200) {
 		n = sz;
 		mem = new T[n];
-		s = 0; f = n - 1;
+		s = 0; /*f = n - 1;*/
+		f = -1;
+		count = 0;
 	}
 
 	int next(int i) { return (i + 1) % n; }
@@ -25,6 +28,7 @@ public:
 		n = q.n;
 		s = q.s;
 		f = q.f;
+		count = q.count;
 
 		mem = new T[n];
 		for (size_t i = s; i != next(f); i = next(i))
@@ -38,6 +42,7 @@ public:
 
 		n = q.n;
 		s = q.s; f = q.f;
+		count = q.count;
 
 		delete[] mem;
 		mem = new T[n];
@@ -48,15 +53,20 @@ public:
 		return *this;
 	}
 
-	bool IsFull() { /*return s == next(next(f));*/return next(next(f)) == s;
+	bool IsFull() { /*return next(next(f)) == s;*/
+		return count == n;
 	}//возможно что=то не так с этими двумя методами
-	bool IsEmpty() { return s == next(f); }
+	bool IsEmpty() { /*return s == next(f);*/
+		return count == 0;
+	}
 
 	void push(const T& el) {
 		if (IsFull()) throw out_of_range("queue is full");
 
 		f = next(f);
+		if (f == -1) f = 0;
 		mem[f] = el;
+		count++;
 	}
 
 	T pop() {
@@ -64,6 +74,11 @@ public:
 
 		T res = mem[s];
 		s = next(s);
+		count--;
+		if (IsEmpty()) {
+			s = 0;
+			f = -1;
+		}
 		return res;
 
 	}

@@ -1,14 +1,16 @@
 #include "ArithmeticExpression.h"
 #include <map>
+#include <iomanip>
 
 using namespace std;
 
 void main() {
 	setlocale(LC_ALL, "Russian");
 	string Expr= "(a+b*c)*(c/d-e)";
+	string Expr2 = "2,5+3";
 	string wrong1 = "a1+b2";
 	string wr = "-(-1)";
-	ArithmeticExpression example(wrong1);
+	ArithmeticExpression example("x+5");
 	example.PrintInfix();
 	example.PrintPostfix();
 	
@@ -23,7 +25,7 @@ void main() {
 		cin >> val;
 		values[elem] = val;
 	}
-
-	cout << example.GetResult(values);
+	double result = example.GetResult(values);
+	cout  << result;
 
 }
