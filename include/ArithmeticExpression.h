@@ -7,6 +7,8 @@
 #include "Calc.h"
 #include "Token.h"
 #include "Tokenizer.h"
+#include "Tree.h"
+#include "Visitor.h"
 using namespace std;
 
 class ArithmeticExpression {

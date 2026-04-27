@@ -10,7 +10,8 @@ void main() {
 	string Expr2 = "2,5+3";
 	string wrong1 = "a1+b2";
 	string wr = "-(-1)";
-	ArithmeticExpression example("x+5");
+	/*ArithmeticExpression example("x+5");*/
+	ArithmeticExpression example("4+3");
 	example.PrintInfix();
 	example.PrintPostfix();
 	

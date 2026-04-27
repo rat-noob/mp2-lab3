@@ -5,7 +5,7 @@ void Tokenizer::next() {
 	if (pos < expression.length()) currentChar = expression[pos++];
 	else currentChar = '\0';
 }
-string Tokenizer::readNumber(){
+string Tokenizer::readNumber(){//получаем число из строки
 	string result;
 	bool hasDecimal = false;
 	while (currentChar != '\0' && (isdigit(currentChar) || currentChar==',')) {
@@ -18,38 +18,8 @@ string Tokenizer::readNumber(){
 	}
 	return result;
 
-
-	//string result;
-	//bool hasDecimal = false;
-
-	//cout << "Начало readNumber, currentChar='" << currentChar << "'" << endl;
-
-	//while (currentChar != '\0') {
-	//	if (currentChar == '.') {
-	//		if (hasDecimal) {
-	//			cout << "Вторая точка, выхожу" << endl;
-	//			break;
-	//		}
-	//		hasDecimal = true;
-	//		cout << "Первая точка, добавляю" << endl;
-	//		result += currentChar;
-	//		next();
-	//	}
-	//	else if (isdigit(currentChar)) {
-	//		result += currentChar;
-	//		next();
-	//	}
-	//	else {
-	//		// Не цифра и не точка - выходим
-	//		cout << "Не цифра и не точка ('" << currentChar << "'), выхожу" << endl;
-	//		break;
-	//	}
-	//}
-
-	//cout << "readNumber вернула: \"" << result << "\"" << endl;
-	//return result;
 }
-string Tokenizer::readIdentifier() {
+string Tokenizer::readIdentifier() {//получаем имя переменной
 	string result;
 	while (currentChar != '\0' && isalnum(currentChar)) {
 		result += currentChar;
@@ -87,7 +57,6 @@ Token Tokenizer::getNewToken(bool expectOperand) {
 		if (expectOperand) {
 			next();
 			if (op == '+') return Token(TokenType::Unary_plus, string(1, op));
-			/*else return Token(TokenType::Unary_minus, string(1, op));*/
 			else return Token(TokenType::Unary_minus, "~");
 		}
 		else {

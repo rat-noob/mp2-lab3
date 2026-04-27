@@ -37,52 +37,7 @@ bool MyParser::IsCorrect(TQueue<char> Qinfix) {
 	return !Error;
 }
 
-//TQueue<char> MyParser::ToPostfix(TQueue<char> Qinfix, map<string, int> priority, map<char,double>& operands) {
-//	TStack<char> st(50);
-//	TQueue<char> postfix(50);
-//	char stackitem;
-//	char qitem;
-//	while (!Qinfix.IsEmpty()) {
-//		qitem = Qinfix.pop();
-//		switch (qitem) {
-//		case'(':
-//			st.push(qitem);
-//			break;
-//
-//		case')':
-//			stackitem = st.pop();
-//			while (stackitem != '(' && !st.IsEmpty()) {//если что убрать условие после и
-//				postfix.push(stackitem);
-//				stackitem = st.pop();
-//			}
-//			break;
-//		case'+':case'-':case'*':case'/':
-//			while (!st.IsEmpty()) {
-//				stackitem = st.pop();
-//				if (priority[qitem] <= priority[stackitem]) {
-//					postfix.push(stackitem);
-//				}
-//				else {
-//					st.push(stackitem);
-//					break;
-//				}
-//			}
-//			st.push(qitem);
-//			break;
-//		default:
-//			if (isdigit(qitem)) {
-//				operands[qitem] = qitem - '0.0';
-//			}
-//			else operands.insert({ qitem,0.0 });
-//			postfix.push(qitem);
-//		}
-//	}
-//	while (!st.IsEmpty()) {
-//		stackitem = st.pop();
-//		postfix.push(stackitem);
-//	}
-//	return postfix;
-//}
+
 
 
 TQueue<Token> MyParser::ToPostfix(TQueue<Token> Qinfix, map<string, int> priority, map<string, double>& operands) {
@@ -97,7 +52,7 @@ TQueue<Token> MyParser::ToPostfix(TQueue<Token> Qinfix, map<string, int> priorit
 			postfix.push(qitem);
 			break;
 		case TokenType::Variable:
-			if (operands.find(qitem.value) == operands.end()) {//возможно удалить
+			if (operands.find(qitem.value) == operands.end()) {
 				operands[qitem.value] = 0.0; 
 			}
 			postfix.push(qitem);
@@ -118,31 +73,20 @@ TQueue<Token> MyParser::ToPostfix(TQueue<Token> Qinfix, map<string, int> priorit
 				stackitem = st.pop();
 			}
 			break;
-			//while (!st.IsEmpty()) {
-			//	stackitem = st.pop();
-			//	if (stackitem.type == TokenType::Paren_open) {
-			//		break;  // нашли открывающую скобку
-			//	}
-			//	else {
-			//		postfix.push(stackitem);  // выталкиваем операторы
-			//	}
-			//}
-			//break;
-		case TokenType::Binary_op://здесь может быть что-то не так
+			
+		case TokenType::Binary_op:
 			while (!st.IsEmpty()) {
-				/*stackitem = st.pop();*/
 				stackitem = st.top();
-				if ((priority[qitem.value] <= priority[stackitem.value])/*&&stackitem.type!=Paren_open*/) {
+				if ((priority[qitem.value] <= priority[stackitem.value])) {
 					postfix.push(stackitem);
 					st.pop();
 					
 				}
 				else {
-					/*st.push(qitem);*/
 					break;
 				}
 			}
-			st.push(qitem);//возможно убрать
+			st.push(qitem);
 			break;
 		default:
 			throw - 1;

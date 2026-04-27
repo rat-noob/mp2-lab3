@@ -2,7 +2,7 @@
 
 double Calc::Calculate(TQueue<char> postfix, map<char, double> operands) {
 	TStack<double> st;
-	double lo, ro;//лувый и правый операнды
+	double lo, ro;
 	while (!postfix.IsEmpty()) {
 		switch (char elem = postfix.pop()) {
 		case '+':
@@ -74,7 +74,6 @@ double Calc::Calculate(TQueue<Token>postfix, map<string, double>& operands) {//п
 			st.push(-val);
 			break;
 		case Variable:
-			/*double val = operands.find(cur.value);*/
 			val = operands[cur.value];
 			st.push(val);
 			break;
