@@ -5,42 +5,25 @@
 #include "stack.h"
 #include <iostream>
 
-class Visitor;
 
 using namespace std;
 
-
-
-
-
-
-
+template<class T>
 struct Node {
-	Token data;
+	T data;
 	Node* left;
 	Node* right;
+	int height;
 
-	Node() : left(nullptr), right(nullptr) {}
-	Node(const Token& token) : data(token), left(nullptr), right(nullptr) {}
-	Node(TokenType type, const string& value = "")
-		: data(type, value), left(nullptr), right(nullptr) {
-	}
-
-
-	bool isLeaf() const { return left == nullptr && right == nullptr; }
-	bool isNumber() const { return data.type == TokenType::Number; }
-	bool isVariable() const { return data.type == TokenType::Variable; }
-	bool isBinaryOp() const { return data.type == TokenType::Binary_op; }
-	bool isUnaryMinus() const { return data.type == TokenType::Unary_minus; }
-	bool isUnaryPlus() const { return data.type == TokenType::Unary_plus; }
-
-	void accept(Visitor* visitor) const;
+	Node() : left(nullptr), right(nullptr),height(1) {}
+	Node(const T& _data) : data(_data), left(nullptr), right(nullptr),height(1) {}
 };
-
+template<class T>
 class Tree {
-	Node* root;
+protected:
+	Node<T>* root;
 
-	void clear(Node* node) {
+	virtual void clear(Node<T>* node) {
 		if (!node) return;
 
 		clear(node->left);
@@ -49,19 +32,19 @@ class Tree {
 		delete node;
 	}
 
-	Node* copy(Node* node) {
+	virtual Node* copy(Node<T>* node) {
 		if (!node) return nullptr;
 
-		Node* newnode = new Node(node->data);
-		newnode->left = node->left;
-		newnode->right = node->right;
+		Node<T>* newnode = new Node<T>(node->data);
+		newnode->left = copy(node->left);
+		newnode->right = copy(node->right);
 		return newnode;
 	}
 
 
 	//сюда добавить обходы
 
-	void LTR(Node* node, vector<const Node*>& result) const {
+	virtual void LTR(Node<T>* node, vector<const Node<T>*>& result) const {
 		if (!node) return;
 
 		LTR(node->left,result);
@@ -69,7 +52,7 @@ class Tree {
 		LTR(node->right,result);
 	}
 
-	void TLR(Node* node, vector<const Node*>& result) const {
+	virtual void TLR(Node<T>* node, vector<const Node<T>*>& result) const {
 		if (!node) return;
 
 		result.push_back(node);
@@ -78,28 +61,13 @@ class Tree {
 
 	}
 
-	void accept(Node* node, Visitor* visitor) const {
-		if (!node) return;
 
-		if (node->isBinaryOp()) {
-			accept(node->left, visitor);
-			accept(node->right, visitor);
-		}
-		else if (node->isUnaryMinus() || node->isUnaryPlus()) accept(node->left, visitor);
-
-
-		visitor->visit(node);
-	}
-
-
-
-
-	int height(Node* node) const{
+	virtual int height(Node<T>* node) const{
 		if (!node) return 0;
 		return max(height(node->left), height(node->right)) + 1;
 	}
 
-	int size(Node* node) const{
+	virtual int size(Node<T>* node) const{
 		if (!node) return 0;
 		return size(node->left) + size(node->right) + 1;
 	}
@@ -107,7 +75,7 @@ class Tree {
 public:
 	Tree(): root(nullptr){}
 	
-	Tree(Node* node) : root(node) {}
+	Tree(Node<T>* node) : root(node) {}
 	Tree(const Tree& other) : root(copy(other.root)) {}
 	
 
@@ -123,86 +91,210 @@ public:
 		return *this;
 	}
 
-	Node* getRoot() const { return root; }
+	Node<T>* getRoot() const { return root; }
 	bool isEmpty() const { return root == nullptr; }
 
 	
-	void setRoot(Node* node) { root = node; }
+	void setRoot(Node<T>* node) { root = node; }
 
-	void accept(Visitor* visitor) const {//дописать в приват секцию
-		if (!root) return;
-		accept(root, visitor);
-	}
 	//obxodi
 
-	void TLR(vector<const Node*>& result) const {
+	virtual void TLR(vector<const Node<T>*>& result) const {
 		TLR(root, result);
 	}
-	void LTR(vector<const Node*>& result) const {
+	virtual void LTR(vector<const Node<T>*>& result) const {
 		LTR(root, result);
 	}
-	int height() const {
+	virtual int height() const {
 		return height(root);
 	}
 
-	int size() const {
+	virtual int size() const {
 		return size(root);
 	}
-
-	static Tree fromPostfix(TQueue<Token>& postfix) {
-		stack<Node*> st;
-
-		while (!postfix.IsEmpty()) {
-			Token token = postfix.pop();
-			Node* newNode = new Node(token);
-
-			switch (token.type) {
-			case TokenType::Number:
-			case TokenType::Variable:
-				st.push(newNode);
-				break;
-			case TokenType::Binary_op:
-
-				if (st.size() < 2) {
-					delete newNode;
-					throw runtime_error("не хватает элементов в стеке");
-				}
-				newNode->right = st.top(); st.pop();
-				newNode->left = st.top(); st.pop();
-
-				st.push(newNode);
-				break;
-
-			case TokenType::Unary_minus:
-			case TokenType::Unary_plus:
-				if (st.empty()) {
-					delete newNode;
-					throw runtime_error("не хватает элементов в стеке");
-				}
-				newNode->left = st.top(); st.pop();
-				st.push(newNode);
-				break;
-
-			default:
-				delete newNode;
-				throw runtime_error("неизвестный тип");
-
-			}
-		}
-
-		if (st.size() != 1) {
-			throw runtime_error("чето не так");
-		}
-
-		return Tree(st.top());
-
-
-	}
-	
-
-
 };
 
-//inline void Node::accept(Visitor* visitor) const {
-//	visitor->visit(this);
+
+template<class T>
+class BST :public Tree<T> {
+	using Tree<T>::root;
+	Node<T>* insertVal(Node<T>* node, const T& value) {
+		if (!node) node = new Node<T>(value);
+		Node<T>* t = node;
+		while (1) {
+			if (t.val == value) throw - 1;
+			if (t.val > value) {
+				if (t->left == nullptr) {
+					t->left = new Node<T>(value);
+					return;
+				}
+				t = t->left;
+			}
+			else {
+				if (t->right == nullptr) {
+					t->right = new Node<T>(value);
+					return;
+				}
+				t = t->right;
+			}
+		}
+	}
+	bool find(Node<T>* node, const T& value) const{
+		if (node == nullptr) return false;
+		Node<T>* t = node;
+		while (t != nullptr) {
+			if (t->data == value) return true;
+			if (t->data < value) t = t->right;
+			else t = t->left;
+		}
+		return false;
+	}
+	Node<T>* findMin(Node<T>* node) const {
+		if (node == nullptr) return nullptr;
+		Node<T>* t = node;
+		while (t != nullptr) {
+			t = t->left;
+		}
+		return t->data;
+	}
+	Node<T>* findMax(Node<T>* node) const {
+		if (node == nullptr) return nullptr;
+		Node<T>* t = node;
+		while (t != nullptr) {
+			t = t->right;
+		}
+		return t->data;
+	}
+	bool remove(const T& value) {
+		if (!root) return false;
+
+		Node<T>* t = root;
+		stack<Node<T>*> path;  
+
+		
+		while (t) {
+			if (t->data == value) break;
+			path.push(t);
+			if (t->data > value) t = t->left;
+			else t = t->right;
+		}
+
+		if (!t) return false;  
+
+		
+		if (t->left && t->right) {
+			
+			Node<T>* successor = t->left;
+			while (successor->right) {
+				path.push(successor);
+				successor = successor->right;
+			}
+
+			
+			t->data = successor->data;
+
+			Node<T>* parent = path.empty() ? nullptr : path.top();
+			if (!path.empty()) path.pop();
+
+			if (parent && parent->left == successor) {
+				parent->left = successor->left;
+			}
+			else if (parent && parent->right == successor) {
+				parent->right = successor->left;
+			}
+			else {
+				t->left = successor->left;
+			}
+
+			delete successor;
+		}
+		else {
+			Node<T>* child = t->left ? t->left : t->right;
+
+			if (path.empty()) {
+				
+				root = child;
+			}
+			else {
+				Node<T>* parent = path.top();
+				if (parent->left == t) parent->left = child;
+				else parent->right = child;
+			}
+
+			delete t;
+		}
+
+		return true;
+	}
+	public:
+		BST() : Tree<T>() {}
+		void insert(const T& value) {
+			root = insertVal(root, value);
+		}
+		bool contains(const T& value) const {
+			return find(root, value);
+		}
+		T getMin() const {
+			Node<T>* minNode = findMin(root);
+			if (!minNode) throw std::runtime_error("Tree is empty");
+			return minNode->data;
+		}
+		T getMax() const {
+			Node<T>* maxNode = findMax(root);
+			if (!maxNode) throw std::runtime_error("Tree is empty");
+			return maxNode->data;
+		}
+};
+
+
+
+
+//static Tree fromPostfix(TQueue<Token>& postfix) {
+//	stack<Node*> st;
+//
+//	while (!postfix.IsEmpty()) {
+//		Token token = postfix.pop();
+//		Node* newNode = new Node(token);
+//
+//		switch (token.type) {
+//		case TokenType::Number:
+//		case TokenType::Variable:
+//			st.push(newNode);
+//			break;
+//		case TokenType::Binary_op:
+//
+//			if (st.size() < 2) {
+//				delete newNode;
+//				throw runtime_error("не хватает элементов в стеке");
+//			}
+//			newNode->right = st.top(); st.pop();
+//			newNode->left = st.top(); st.pop();
+//
+//			st.push(newNode);
+//			break;
+//
+//		case TokenType::Unary_minus:
+//		case TokenType::Unary_plus:
+//			if (st.empty()) {
+//				delete newNode;
+//				throw runtime_error("не хватает элементов в стеке");
+//			}
+//			newNode->left = st.top(); st.pop();
+//			st.push(newNode);
+//			break;
+//
+//		default:
+//			delete newNode;
+//			throw runtime_error("неизвестный тип");
+//
+//		}
+//	}
+//
+//	if (st.size() != 1) {
+//		throw runtime_error("чето не так");
+//	}
+//
+//	return Tree(st.top());
+//
+//
 //}
