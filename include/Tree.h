@@ -117,6 +117,8 @@ public:
 
 template<class T>
 class BST :public Tree<T> {
+	
+protected:
 	using Tree<T>::root;
 	Node<T>* insertVal(Node<T>* node, const T& value) {
 		if (!node) node = new Node<T>(value);
@@ -244,6 +246,135 @@ class BST :public Tree<T> {
 			if (!maxNode) throw std::runtime_error("Tree is empty");
 			return maxNode->data;
 		}
+};
+template<class T>
+class  AVL :public BST<T> {
+
+	using BST<T>::root;
+	using BST<T>::insertVal;
+	using BST<T>::remove;
+
+	int getHeight(Node<T>* node) const {
+		if (!node) return 0;
+		return node->height;
+	}
+	void updHeight(Node<T>* node) const {
+		if (node) {
+			node->height = 1 + max(getHeight(node->right), getHeight(node->left));
+		}
+	}
+	int getBalance(Node<T>* node) const {
+		if (!node) return 0;
+		return getHeight(node->right) - getHeight(node->left);
+	}
+
+	Node<T>* rotateRight(Node<T>* node) {
+		Node<T>* x = node->left;
+		Node<T>* y = x->right;
+
+		x->right = node;
+		node->left = y;
+
+		updHeight(node);
+		updHeight(x);
+
+		return x;
+	}
+
+	Node<T>* rotateLeft(Node<T>* node) {
+		Node<T>* x = node->right;
+		Node<T>* y = x->left;
+
+		x->left = node;
+		node->right = y;
+
+		updHeight(node);
+		updHeight(x);
+
+		return x;
+	}
+
+	Node<T>* balance(Node<T>* node) {
+		if (!node) return nullptr;
+
+		updHeight(node);
+
+		int b = getBalance(node);
+		//LL
+		if (b < -1 && getBalance(node->left) <= 0) {
+			return rotateRight(node);
+		}
+		//LR
+		if (b < -1 && getBalance(node->left)>0) {
+			node->left = rotateLeft(node->left);
+			return rotateRight(node);
+		}
+		//RR
+		if (b > 1 && getBalance(node->right) >= 0) {
+			return rotateLeft(node);
+		}
+		//RL
+		if (b > 1 && getBalance(node->right < 0)) {
+			node->right = rotateRight(node->right);
+			return rotateRight(node->right);
+		}
+
+		return node;
+	}
+
+	Node<T>* insertAVL(Node<T>* node, const T& val) {
+		if (!node) return new Node<T>*(val);
+
+		if (val < node->data) {
+			node->left = insertAVL(node->left, val);
+		}else if(val > node->data) {
+			node.right = insertAVL(node->right, val);
+		}
+		else {
+			return node;
+		}
+
+		return balance(node);
+	}
+
+	Node<T>* removeAVL(Node<T>* node, const T& val,bool& removed) {
+		if (!node) return nullptr;
+
+		if (value < node->data) {
+			node->left = removeAVL(node->left, value, removed);
+		}
+		else if (value > node->data) {
+			node->right = removeAVL(node->right, value, removed);
+		}
+		else {
+			
+			removed = true;
+
+			if (!node->left && !node->right) {
+				delete node;
+				return nullptr;
+			}
+			else if (!node->left) {
+				Node<T>* temp = node->right;
+				delete node;
+				return temp;
+			}
+			else if (!node->right) {
+				Node<T>* temp = node->left;
+				delete node;
+				return temp;
+			}
+			else {
+				Node<T>* minNode = node->right;
+				while (minNode->left) minNode = minNode->left;
+				node->data = minNode->data;
+				node->right = removeAVL(node->right, minNode->data, removed);
+			}
+		}
+
+		updateHeight(node);
+		return balance(node);
+	}
 };
 
 

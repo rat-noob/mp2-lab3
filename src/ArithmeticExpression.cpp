@@ -60,21 +60,21 @@ double ArithmeticExpression::GetResult(map<string, double> val) {
 	}
 	//new
 
-	Tree tr = Tree::fromPostfix(TokPostfix);
-	PrintVisitor printer;
-	cout << "Инфиксная запись: ";
-	tr.accept(&printer);
-	cout << endl;
+	//Tree tr = Tree::fromPostfix(TokPostfix);
+	//PrintVisitor printer;
+	//cout << "Инфиксная запись: ";
+	//tr.accept(&printer);
+	//cout << endl;
 
 
-	CalcVisitor calculator(newop);
-	tr.accept(&calculator);
-	cout << "Результат: " << calculator.getResult() << endl;
+	//CalcVisitor calculator(newop);
+	//tr.accept(&calculator);
+	//cout << "Результат: " << calculator.getResult() << endl;
 
-	//
+	////
 
-	double res = calculator.getResult();
-	//double res = calc.Calculate(TokPostfix, newop);
+	//double res = calculator.getResult();
+	double res = calc.Calculate(TokPostfix, newop);
 
 	return res;
 }
